@@ -68,8 +68,8 @@
       </div>
     </template>
     <span class="qiandao-text">签到可获得银币，连续签到可获得更多银币！</span>
-    <el-button type="success"  style="margin-top: 11px;" disabled>点我签到！</el-button>
-    <el-button plain  style="margin-top: 11px;" disabled>今日人品</el-button>
+    <el-button type="success"  style="margin-top: 11px;" @click="signin" :disabled="isDisable">点我签到！</el-button>
+    <el-button plain  style="margin-top: 11px;" @click="jrrp">今日人品</el-button>
   </el-card>
 </el-row>
 <el-row>
@@ -141,8 +141,9 @@ import { ref } from 'vue';
 import { GetStatusCode, isPassedVerifictionInt } from '../modules/StatusCodeParser';
 import { GetCookie, RemoveCookie } from '../modules/CookieHelper';
 import axios from 'axios';
-import { ElMessage, ElMessageBox, ElScrollbar } from 'element-plus';
+import { ElMessage, ElMessageBox, ElScrollbar, ElNotification, breadcrumbItemProps } from 'element-plus';
 import router from './router';
+import sliderVerifyCode from '../modules/slider-verify-code.vue';
 
 const route = useRoute();
 let username = ref('**');
@@ -152,6 +153,9 @@ let userId = ref('0')
 let email = ref('**')
 let apple = ref('**')
 let level = ref('**')
+let bread = ref('**')
+let jucie = ref('**')
+let isDisable = false
 const logout = () => {
   ElMessageBox.confirm('确认退出登录？','退出登录')
   .then(function(){
@@ -163,6 +167,68 @@ const logout = () => {
 const open = () => {
   ElMessageBox.alert(`${GetCookie('token')}`, '临时密钥', {
     confirmButtonText: 'OK',
+  })
+}
+const jrrp = () => {
+  axios.get(`/api?type=luck&token=${GetCookie('token')}`)
+  .then(function(Response){
+    const ResponseCode = GetStatusCode(Response);
+    if (isPassedVerifictionInt(ResponseCode,200) == true){
+        ElMessage.success('获取成功！')
+        ElNotification.success({
+          title: '今日人品',
+          dangerouslyUseHTMLString: true,
+          message: `你今日的人品值为：${Response['data']['luck']}${Response['data']['luckMessage']}`
+        })
+    }else{
+        if (ResponseCode == 423){
+            ElMessage.error("⚡您请求的太快啦！请一分钟后再试噢 ！⚡")
+        }
+        else if(ResponseCode == 401){
+            ElMessage.error("您还没有登录噢！")
+            router.push('/login')
+        }
+        else{
+          ElMessage.error(`获取失败：${Response.data['message']}`)
+        }
+    }
+  })
+  .catch(function(){
+    ElNotification.error({
+      title: "后端服务发生错误",
+      message: "Error:无法连接后端服务器，请检查网络连接或联系墨守"
+    })
+  })
+}
+const signin = () => {
+  axios.get(`/api?type=signIn&token=${GetCookie('token')}`)
+  .then(function(Response){
+    const ResponseCode = GetStatusCode(Response);
+    if (isPassedVerifictionInt(ResponseCode,200) == true){
+        ElMessage.success('成功')
+        ElNotification.success({
+          title: '签到成功！',
+          dangerouslyUseHTMLString: true,
+          message: `你今日的人品值为：${Response['data']['luck']}${Response['data']['luckMessage']}\n${Response['data']['signInMessage']}`
+        })
+    }else{
+        if (ResponseCode == 423){
+            ElMessage.error("⚡您请求的太快啦！请一分钟后再试噢 ！⚡")
+        }
+        else if(ResponseCode == 401){
+            ElMessage.error("您还没有登录噢！")
+            router.push('/login')
+        }
+        else{
+          ElMessage.error(`签到失败：${Response.data['message']}`)
+        }
+    }
+  })
+  .catch(function(){
+    ElNotification.error({
+      title: "后端服务发生错误",
+      message: "Error:无法连接后端服务器，请检查网络连接或联系墨守"
+    })
   })
 }
 axios.get(`/api?type=userInfo&token=${GetCookie('token')}`)
