@@ -40,7 +40,7 @@
     </div>
     <div class="item">
       <span class="text" style="margin-left: 5px;color:rgb(118, 124, 130);margin-left: 100px;">隧道</span>
-      <span class="text2" style="margin-left: 5px;margin-top:10px;margin-left: 100px;">咕咕咕</span>
+      <span class="text2" style="margin-left: 5px;margin-top:10px;margin-left: 100px;">{{usercode}}</span>
     </div>
   </el-row>
   <el-button plain style="margin-left: 5px;margin-top:10px" :icon="User" @click="changeusernameVisible = true">修改用户名</el-button>
@@ -158,6 +158,7 @@ let isSended = ref(false)
 let isSending = ref(false)
 let isSended2 = ref(false)
 let isSending2 = ref(false)
+let usercode = ref('0')
 let ButtonData = ref('获取验证码')
 let ButtonData2 = ref('获取验证码')
 const errorHandler = () => true
@@ -230,6 +231,21 @@ axios.get(`/api?type=infoUpdate&key=password&value=${userpasswordchange.value}&c
           },4000);
 })
 }
+axios.get(`/api?type=statistic&token=${GetCookie('token')}`)
+.then(function(Response){
+    const ResponseCode = GetStatusCode(Response);
+    if (isPassedVerifictionInt(ResponseCode,200) == true){
+        var statisticData = Response['data']
+        usercode.value = statisticData['userCodeCount']
+    }else{
+        if (ResponseCode == 423){
+            ElMessage.error("⚡您请求的太快啦！请一分钟后再试噢 ！⚡")
+        }else{
+            ElMessage.error("您还没有登录噢！")
+            router.push('/login')
+        }
+    }
+})
 const changeuseremail = () => {
 axios.get(`/api?type=infoUpdate&key=email&value=${useremailchange.value}&code=${verificationcode.value}&code2=${verificationcodenew.value}&token=${GetCookie('token')}`)
 .then(function(Response){

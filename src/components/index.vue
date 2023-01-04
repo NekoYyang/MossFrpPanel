@@ -55,7 +55,7 @@
     </div>
     <div class="item">
       <span class="text" style="color:rgb(118, 124, 130);margin-left: 54px;">在线隧道</span>
-      <span class="text2" style="margin-top:10px;margin-left: 54px;">还没做！</span>
+      <span class="text2" style="margin-top:10px;margin-left: 54px;">{{usercode}}</span>
     </div>
   </el-row>
   </el-scrollbar>
@@ -68,7 +68,7 @@
       </div>
     </template>
     <span class="qiandao-text">签到可获得银币，连续签到可获得更多银币！</span>
-    <el-button type="success"  style="margin-top: 11px;" @click="signin" :disabled="isDisable">点我签到！</el-button>
+    <el-button type="success"  style="margin-top: 11px;" @click="signin" ref="tet" id="tet" :disabled="issigned" >点我签到！</el-button>
     <el-button plain  style="margin-top: 11px;" @click="jrrp">今日人品</el-button>
   </el-card>
 </el-row>
@@ -141,9 +141,8 @@ import { ref } from 'vue';
 import { GetStatusCode, isPassedVerifictionInt } from '../modules/StatusCodeParser';
 import { GetCookie, RemoveCookie } from '../modules/CookieHelper';
 import axios from 'axios';
-import { ElMessage, ElMessageBox, ElScrollbar, ElNotification, breadcrumbItemProps } from 'element-plus';
+import { ElMessage, ElMessageBox, ElScrollbar, ElNotification, breadcrumbItemProps, ElAlert, ElAside, ElButton, ElCard, ElCollapse, ElCollapseItem, ElContainer, ElDivider, ElDropdown, ElDropdownItem, ElDropdownMenu, ElHeader, ElIcon, ElMain, ElMenu, ElMenuItem, ElRow, ElTooltip } from 'element-plus';
 import router from './router';
-import sliderVerifyCode from '../modules/slider-verify-code.vue';
 
 const route = useRoute();
 let username = ref('**');
@@ -153,9 +152,9 @@ let userId = ref('0')
 let email = ref('**')
 let apple = ref('**')
 let level = ref('**')
-let bread = ref('**')
-let jucie = ref('**')
-let isDisable = false
+let usercode = ref('0')
+let issigned = ref(false)
+let ifsign = ref('--')
 const logout = () => {
   ElMessageBox.confirm('确认退出登录？','退出登录')
   .then(function(){
@@ -201,6 +200,7 @@ const jrrp = () => {
   })
 }
 const signin = () => {
+  issigned.value = true
   axios.get(`/api?type=signIn&token=${GetCookie('token')}`)
   .then(function(Response){
     const ResponseCode = GetStatusCode(Response);
@@ -214,13 +214,16 @@ const signin = () => {
     }else{
         if (ResponseCode == 423){
             ElMessage.error("⚡您请求的太快啦！请一分钟后再试噢 ！⚡")
+            issigned.value = false
         }
         else if(ResponseCode == 401){
             ElMessage.error("您还没有登录噢！")
             router.push('/login')
+            issigned.value = false
         }
         else{
           ElMessage.error(`签到失败：${Response.data['message']}`)
+          issigned.value = false
         }
     }
   })
@@ -255,6 +258,29 @@ axios.get(`/api?type=userInfo&token=${GetCookie('token')}`)
         silver.value = userData['silver']
         userId.value = userData['userID']
         email.value = userData['email']
+        ifsign.value = userData['signIn']
+        if (globalItem['signIn'] == true){
+          console.log("已签到")
+          issigned.value = true;
+        }else if (globalItem['signIn'] == false){
+          console.log("未签到")
+          issigned.value = false;
+        }
+    }else{
+        if (ResponseCode == 423){
+            ElMessage.error("⚡您请求的太快啦！请一分钟后再试噢 ！⚡")
+        }else{
+            ElMessage.error("您还没有登录噢！")
+            router.push('/login')
+        }
+    }
+})
+axios.get(`/api?type=statistic&token=${GetCookie('token')}`)
+.then(function(Response){
+    const ResponseCode = GetStatusCode(Response);
+    if (isPassedVerifictionInt(ResponseCode,200) == true){
+        var statisticData = Response['data']
+        usercode.value = statisticData['userCodeCount']
     }else{
         if (ResponseCode == 423){
             ElMessage.error("⚡您请求的太快啦！请一分钟后再试噢 ！⚡")
