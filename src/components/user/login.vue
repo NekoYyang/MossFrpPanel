@@ -57,7 +57,6 @@
     background: rgb(46 36 36 / 70%);
     color: blanchedalmond;
     border-color: rgb(255, 255, 255);
-    width: 111px;
   }
   .loginbutton:hover{
     background: rgba(0, 0, 0, 0.7)  !important;

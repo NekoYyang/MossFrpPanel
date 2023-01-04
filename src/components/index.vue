@@ -80,12 +80,12 @@
       </div>
     </template>     
     <el-scrollbar height="220px">
-      <el-alert title="使用须知" type="warning" description="控制台如有BUG请向管理组反馈！" show-icon style="width: 100%;" :closable="false"/>
+      <el-alert title="使用须知" type="warning" description="Web端注册用户通过群内绑定QQ ！" show-icon style="width: 100%;" :closable="false"/>
     <el-collapse  style="width: 100%;margin-top: 20px;white-space: pre-wrap;" >
       <el-collapse-item title="节点价格调整通知" name="1" >
         <div>
           <p style="width: 90%;"> 经过一段时间的观察，目前MossFrp的节点价格在设置上有一定的不合理性。</p>
-          <p style="width: 90%;"> 故经过管理组讨论，我们决定于2023.1.1对所有节点价格进行一次大改，整体方向为降低费用。</p>
+          <p style="width: 90%;"> 故经过管理组讨论，我们决定于暂于2023.1.4对所有节点价格进行一次大改，整体方向为降低费用，价格变动会比较大。</p>
         </div>
         <div>
           <p style="width: 90%;"> 请资金敏感用户考虑提前退币，价格下调后退币将按照当时价格计算，可能会有穿透码贬值的情况。我们已在此对可预见的问题作提前通知，后续不再另作补偿。</p>
