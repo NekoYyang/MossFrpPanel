@@ -4,7 +4,7 @@
         <h2 style="font-size:var(--el-font-size-extra-large)">请登陆您的账户</h2>
         <el-input ref="v1" v-model="userName" placeholder-color="#ffebcd" placeholder="邮箱" />
         <el-input ref="v2" type="password" v-model="passWord" placeholder="密码" />
-        <el-button @click="LoginButtonClicked" type="primary" size="large" color="#114514">登录</el-button>
+        <el-button @click="LoginButtonClicked" type="primary" size="large" color="rgb(46 36 36 / 70%)" class="loginbutton">登录</el-button>
         <el-button type="text" @click="ForgetPasswordButttonClicked" color="#114514">忘记密码？</el-button>
         <el-button @click="RegButtonClicked" type="text">注册账户</el-button>
     </div>
@@ -53,6 +53,23 @@
         border-radius:10px;
         background: rgb(46 36 36 / 70%);
     }
+    #loginBox .loginbutton{
+    background: rgb(46 36 36 / 70%);
+    color: blanchedalmond;
+    border-color: rgb(255, 255, 255);
+    width: 111px;
+  }
+  .loginbutton:hover{
+    background: rgba(0, 0, 0, 0.7)  !important;
+    color: white !important;
+    border-color: blanchedalmond !important;
+  }
+  /*按钮点击*/
+#loginbox .el-button:focus {
+    background: rgba(0, 0, 0, 0.7) !important;
+    color: blanchedalmond !important;
+    border-color: blanchedalmond !important;
+  }
 </style>
 <script lang="ts" setup>
 import { ref } from 'vue';

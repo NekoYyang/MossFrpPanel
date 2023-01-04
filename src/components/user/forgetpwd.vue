@@ -5,7 +5,7 @@
       <el-input ref="v1" v-model="eMail" placeholder="邮箱" />
       <el-input ref="v2" type="password" v-model="passWord" placeholder="新密码" />
       <el-input class="verification" ref="v1" v-model="verification" placeholder="验证码" />      <el-button class="getcode" :disabled="isSended" :loading="isSending" @click="getCode" >{{ButtonData}}</el-button>
-      <el-button @click="pwdButtonClicked" type="primary" size="large"  style="margin-left:1px;width:100px;" class="pwdbutton">重置密码</el-button>
+      <el-button @click="pwdButtonClicked" type="primary" size="large"  color="rgb(46 36 36 / 70%)" style="margin-left:1px;width:100px;" class="pwdbutton">重置密码</el-button>
       <el-button type="text" @click="BackRegister">我还没有账号</el-button>
       <el-button type="text" @click="BackLogin">返回登录</el-button>
   </div>
