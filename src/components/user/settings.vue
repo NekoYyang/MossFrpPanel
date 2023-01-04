@@ -117,9 +117,9 @@
     </template>
     <el-form>
       <span>请输入您购买的卡密</span>
-      <el-input placeholder="还没做好...." :prefix-icon="Key" style="margin-top: 15px" disabled>
+      <el-input placeholder="还没做好...." v-model="card" :prefix-icon="Key" style="margin-top: 15px">
       </el-input>
-      <el-button plain style="margin-top: 20px;float: right;" :icon="Present" disabled>兑换</el-button>
+      <el-button plain style="margin-top: 20px;float: right;" :icon="Present" @click="carduse">兑换</el-button>
       <el-button plain style="margin-top: 20px;float: right;margin-right: 10px;" :icon="ShoppingTrolley" @click="buykey">购买卡密</el-button>   
     </el-form>
   </el-card>
@@ -154,6 +154,7 @@ let verificationcodenew = ref()
 let usernamechange = ref()
 let useremailchange = ref()
 let userpasswordchange = ref()
+let card = ref()
 let isSended = ref(false)
 let isSending = ref(false)
 let isSended2 = ref(false)
@@ -170,7 +171,42 @@ const changepasswordVisible = ref(false)
 const buykey = () => {
   window.open("https://www.mcrmb.com/fk/24184",'_blank')
 }
-
+const carduse = () => {
+  axios.get(`/api?type=cardUse&card=${card.value}&token=${GetCookie('token')}`)
+      .then(function(Response){
+        const ResponseCode = GetStatusCode(Response);
+        if (isPassedVerifictionInt(ResponseCode,200) == true){
+          var globalItem = Response['data'];
+          console.log(globalItem)
+              if (globalItem['success'] === true){
+                ElMessage.success('兑换成功！')
+                ElNotification.success({
+                  title: '兑换成功',
+                  dangerouslyUseHTMLString: true,
+                  message: `${Response['data']['message']}`
+              })
+              } else if (globalItem['success'] === false){
+                ElNotification.error({
+                  title: '兑换失败',
+                  dangerouslyUseHTMLString: true,
+                  message: `${Response['data']['message']}`
+                })
+        }else{
+          if (ResponseCode == 423){
+            ElMessage.error("IP黑名单，请稍后再试")
+          }else{
+            ElMessage.error(Response['data']['message'])
+          }
+        }
+      }
+      })
+      .catch(function(Response){
+        ElNotification.error('恭喜您中奖了！无法连接到服务器')
+        setTimeout(function () {
+          window.location.reload();
+        },4000);
+      })
+}
 const changeusername = () => {
 axios.get(`/api?type=infoUpdate&key=username&value=${usernamechange.value}&code=${verificationcode.value}&token=${GetCookie('token')}`)
 .then(function(Response){

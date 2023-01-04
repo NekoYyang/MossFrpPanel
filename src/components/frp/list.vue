@@ -40,6 +40,9 @@
             <el-row>
               <span style="margin-top:5px;" class="ml-3 w-35 text-gray-600 inline-flex items-center"><el-tooltip content="时长不可小于3天，大于360天">时长</el-tooltip></span><el-input min="3" max="360" type="number" maxlength="3" v-model="time" style="margin-left:20px; width: 7em;" ></el-input><span style="margin-top:6px;margin-left:10px;" class="ml-3 w-35 text-gray-600 inline-flex items-center">天</span>
             </el-row>
+            <el-row>
+              <span style="margin-top:5px;" class="ml-3 w-35 text-gray-600 inline-flex items-center">带宽</span><span>114514</span><span style="margin-top:7px;margin-left:10px;" class="ml-3 w-35 text-gray-600 inline-flex items-center">Mbps</span>
+            </el-row>
             <el-row><el-button @click="centerDialogVisible = false;createCode();" type="primary" size="large">创建穿透码</el-button></el-row>
           </div>
         </el-scrollbar>
@@ -54,7 +57,7 @@
             <el-table-column prop="band" label="带宽" width="80" />
             <el-table-column prop="outdated" label="过期时间" width="200" />
             <el-table-column prop="orange" label="状态" width="120" ><template #default="scope">
-              <el-tag  :type="(scope.row.status == '过期' ? 'warning' : (scope.row.status == '运行' ? 'success' : (scope.row.status == '封禁' ? 'danger' : (scope.row.status == '过期' ? '' :  'info'))))">{{scope.row.status}}</el-tag></template></el-table-column>
+            <el-tag  :type="(scope.row.status == '过期' ? 'warning' : (scope.row.status == '运行' ? 'success' : (scope.row.status == '封禁' ? 'danger' : (scope.row.status == '过期' ? '' :  'info'))))">{{scope.row.status}}</el-tag></template></el-table-column>
             <el-table-column prop="activity" label="活动创建码" width="130" />
             <el-table-column fixed="right" label="操作">
               <template #default="scope">

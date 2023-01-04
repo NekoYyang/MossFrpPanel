@@ -1,10 +1,10 @@
 <template>
   <div class="background" v-loading="isLoading">
-    <div id="loginBox" v-loading="isLoading">
+    <div id="loginBox" v-loading="isLoading"     :element-loading-spinner="svg"      element-loading-svg-view-box="-10, -10, 50, 50">
         <h2 style="font-size:var(--el-font-size-extra-large)">请登陆您的账户</h2>
         <el-input ref="v1" v-model="userName" placeholder-color="#ffebcd" placeholder="邮箱" />
-        <el-input ref="v2" type="password" v-model="passWord" placeholder="密码" />
-        <el-button @click="LoginButtonClicked" type="primary" size="large" color="rgb(46 36 36 / 70%)" class="loginbutton">登录</el-button>
+        <el-input ref="v2" type="password" v-model="passWord" @keyup.enter.native="LoginButtonClicked" placeholder="密码" />
+        <el-button @click="LoginButtonClicked"  type="primary" size="large" color="rgb(46 36 36 / 70%)" class="loginbutton">登录</el-button>
         <el-button type="text" @click="ForgetPasswordButttonClicked" color="#114514">忘记密码？</el-button>
         <el-button @click="RegButtonClicked" type="text">注册账户</el-button>
     </div>
@@ -80,6 +80,7 @@ import { SetCookie } from '../../modules/CookieHelper.js';
 const userName = ref('')
 const passWord = ref('')
 const isLoading = ref(false);
+
 const RegButtonClicked = () => {
     router.push('/register')
 }
@@ -87,30 +88,33 @@ const ForgetPasswordButttonClicked = () => {
     router.push('/forgetpwd')
 }
 const LoginButtonClicked = () => {
-
     if (userName.value == '' && passWord.value ==''){
-        ElMessage.error('用户名或密码不可为空噢！🙅‍♂️')
+        ElMessage.error('用户名或密码不可为空噢！')
     }else{
-        const loginContainerInstance = document.getElementById("loginBox");
-        const loadingInstance = ElLoading.service({target: loginContainerInstance, text: "少女祈祷中...",  background: 'rgba(0, 0, 0, 0.7)',});
+        const loadingInstance = ElLoading.service({text: "少女祈祷中...",  background: 'rgba(0, 0, 0, 0.7)', fullscreen: true, lock: true, });
         axios.get(`/api?type=login&loginType=email&account=${userName.value}&password=${passWord.value}`)
         .then(function(Response){
-            loadingInstance.close();
             const ResponseCode = GetStatusCode(Response)
             if (isPassedVerifictionInt(ResponseCode,200) == true){
                 SetCookie('token',Response['data']['token'])
-                ElMessage.success("欢迎回家 ，博士🥰")
-                router.push('/')
+                setTimeout(() => {
+                     loadingInstance.close();
+                     ElMessage.success("欢迎回家 ，博士🥰")
+                     router.push('/')
+               }, 2000)
             }else{
                 if (ResponseCode == 423){
                     ElMessage.error("⚡您请求的太快啦！请一分钟后再试噢 ！⚡")
+                    loadingInstance.close();
                 }else{
                     ElMessage.error("唔，你的账号密码是不是错了捏🤔")
+                    loadingInstance.close();
                 }
             }
         })
         .catch(function(){
             ElNotification.error({title: "错误", message: "唔，API 貌似无法访问呢！😶‍🌫️"})
+            loadingInstance.close();
         })
     }
 }

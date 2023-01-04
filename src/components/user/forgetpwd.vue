@@ -113,8 +113,7 @@ let isSending = ref(false)
 let ButtonData = ref('获取验证码')
 const getCode = () => {
     let time = 60;
-    const loginContainerInstance = document.getElementById("pwdBox");
-    const loadingInstance = ElLoading.service({target: loginContainerInstance, text: "少女祈祷中..", background: 'rgba(0, 0, 0, 0.7)',});
+    const loadingInstance = ElLoading.service({text: "少女祈祷中..", background: 'rgba(0, 0, 0, 0.7)', fullscreen: true, lock: true, });
     axios.get(`/api?type=verification&email=${eMail.value}&key=forgetPassword`)
       .then(function(Response){
           loadingInstance.close();
@@ -159,8 +158,7 @@ const pwdButtonClicked = () => {
   if (eMail.value == '' && passWord.value =='' && verification.value ==''){
       ElMessage.error('邮箱，密码和验证码不可为空')
   }else{
-      const loginContainerInstance = document.getElementById("pwdBox");
-      const loadingInstance = ElLoading.service({target: loginContainerInstance, text: "少女祈祷中..", background: 'rgba(0, 0, 0, 0.7)'});
+    const loadingInstance = ElLoading.service({text: "少女祈祷中..", background: 'rgba(0, 0, 0, 0.7)', fullscreen: true, lock: true, });
       axios.get(`/api?type=forgetPassword&email=${eMail.value}&code=${verification.value}&password=${passWord.value}`)
       .then(function(Response){
           loadingInstance.close();

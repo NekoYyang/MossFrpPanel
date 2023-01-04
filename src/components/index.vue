@@ -35,7 +35,6 @@
       </div>
     </template>
     <div  style="white-space: nowrap;">
-    <el-scrollbar height="80px" width="30px">
       <el-row>
     <div class="item"  >
       <span class="text" style="color:rgb(118, 124, 130)">UID</span>
@@ -58,7 +57,6 @@
       <span class="text2" style="margin-top:10px;margin-left: 54px;">{{usercode}}</span>
     </div>
   </el-row>
-  </el-scrollbar>
 </div>
   </el-card>
   <el-card class="qiandao" height >
@@ -79,7 +77,7 @@
         <span>公告</span>
       </div>
     </template>     
-    <el-scrollbar height="220px">
+    <el-scrollbar height="280px">
       <el-alert title="使用须知" type="warning" description="Web端注册用户通过群内绑定QQ ！" show-icon style="width: 100%;" :closable="false"/>
     <el-collapse  style="width: 100%;margin-top: 20px;white-space: pre-wrap;" >
       <el-collapse-item title="节点价格调整通知" name="1" >
@@ -341,7 +339,7 @@ axios.get(`/api?type=statistic&token=${GetCookie('token')}`)
 }
 
 .box-card {
-  width: 758px !important;
+  width: 758px;
   max-width: 100%;
   margin: 24px;
   height: 180px;

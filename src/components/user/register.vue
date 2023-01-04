@@ -112,8 +112,7 @@ const getCode = () => {
     isSending.value = true;
     //按下按钮后，获取验证码，60s按钮不可用，60s后按钮可用
     let time = 60;
-    const loginContainerInstance = document.getElementById("regBox");
-    const loadingInstance = ElLoading.service({target: loginContainerInstance, text: "少女祈祷中..", background: 'rgba(0, 0, 0, 0.7)',});
+    const loadingInstance = ElLoading.service({text: "少女祈祷中..", background: 'rgba(0, 0, 0, 0.7)', fullscreen: true, lock: true, });
     axios.get(`/api?type=verification&email=${eMail.value}&key=register`)
       .then(function(Response){
           loadingInstance.close();
@@ -158,8 +157,7 @@ const RegButtonClicked = () => {
   if (userName.value == '' && passWord.value =='' && verification.value ==''){
       ElMessage.error('用户名，密码和验证码不可为空')
   }else{
-      const loginContainerInstance = document.getElementById("regBox");
-      const loadingInstance = ElLoading.service({target: loginContainerInstance, text: "少女祈祷中..", background: 'rgba(0, 0, 0, 0.7)'});
+    const loadingInstance = ElLoading.service({text: "少女祈祷中..", background: 'rgba(0, 0, 0, 0.7)', fullscreen: true, lock: true, });
       axios.get(`/api?type=register&email=${eMail.value}&username=${userName.value}&code=${verification.value}&password=${passWord.value}`)
       .then(function(Response){
           loadingInstance.close();
