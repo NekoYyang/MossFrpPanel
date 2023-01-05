@@ -22,16 +22,17 @@
     .left-float{
         float: left
     }
+    /* 不建议你把登录框放在中间 */
     #loginBox{
         color: blanchedalmond;
-        float:right;
+        float:left;
         width:20%;
         padding:10px 15px;
         margin-top: 13%;
         height: 40%;
-        margin-right: 25%;
         border-radius:10px;
-        transform: translate(-200px);
+        margin-left: 10%;
+        backdrop-filter: blur(25px);
         background: rgb(46 36 36 / 70%);
         box-shadow: 0px 15px 25px #00000020;
     }
