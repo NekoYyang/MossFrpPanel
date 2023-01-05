@@ -104,7 +104,7 @@
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="changepasswordVisible = false">取消</el-button>
-        <el-button type="primary" @click="changepasswordVisible = false;changeusername()">确定</el-button>
+        <el-button type="primary" @click="changepasswordVisible = false;changeuserpassword()">确定</el-button>
       </span>
     </template>
   </el-dialog>
@@ -115,9 +115,9 @@
         <span>兑换卡密</span>
       </div>
     </template>
-    <el-form>
+    <el-form ref="form">
       <span>请输入您购买的卡密</span>
-      <el-input placeholder="还没做好...." v-model="card" :prefix-icon="Key" style="margin-top: 15px">
+      <el-input placeholder="XXXXXXXXXXXXXXXX" v-model="card" :prefix-icon="Key" style="margin-top: 15px">
       </el-input>
       <el-button plain style="margin-top: 20px;float: right;" :icon="Present" @click="carduse">兑换</el-button>
       <el-button plain style="margin-top: 20px;float: right;margin-right: 10px;" :icon="ShoppingTrolley" @click="buykey">购买卡密</el-button>   
@@ -179,6 +179,7 @@ const carduse = () => {
           var globalItem = Response['data'];
           console.log(globalItem)
               if (globalItem['success'] === true){
+                let card = ref()
                 ElMessage.success('兑换成功！')
                 ElNotification.success({
                   title: '兑换成功',
@@ -191,15 +192,21 @@ const carduse = () => {
                   dangerouslyUseHTMLString: true,
                   message: `${Response['data']['message']}`
                 })
+                setTimeout(function () {
+             window.location.reload();
+          },2000);
         }else{
           if (ResponseCode == 423){
             ElMessage.error("IP黑名单，请稍后再试")
           }else{
             ElMessage.error(Response['data']['message'])
+            setTimeout(function () {
+             window.location.reload();
+          },2000);
           }
         }
       }
-      })
+    })
       .catch(function(Response){
         ElNotification.error('恭喜您中奖了！无法连接到服务器')
         setTimeout(function () {

@@ -40,9 +40,6 @@
             <el-row>
               <span style="margin-top:5px;" class="ml-3 w-35 text-gray-600 inline-flex items-center"><el-tooltip content="时长不可小于3天，大于360天">时长</el-tooltip></span><el-input min="3" max="360" type="number" maxlength="3" v-model="time" style="margin-left:20px; width: 7em;" ></el-input><span style="margin-top:6px;margin-left:10px;" class="ml-3 w-35 text-gray-600 inline-flex items-center">天</span>
             </el-row>
-            <el-row>
-              <span style="margin-top:5px;" class="ml-3 w-35 text-gray-600 inline-flex items-center">带宽</span><span>114514</span><span style="margin-top:7px;margin-left:10px;" class="ml-3 w-35 text-gray-600 inline-flex items-center">Mbps</span>
-            </el-row>
             <el-row><el-button @click="centerDialogVisible = false;createCode();" type="primary" size="large">创建穿透码</el-button></el-row>
           </div>
         </el-scrollbar>
