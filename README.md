@@ -48,8 +48,8 @@
 
 ## 感谢
 
-[@DreamOneX](https://github.com/HeyCrab3)
+[@DreamOneX](https://github.com/DreamOneX)
 
-[@Threegr3](https://github.com/HeyCrab3)
+[@Threegr3](https://github.com/Threegr3)
 
 欢迎任何形式的PR。
